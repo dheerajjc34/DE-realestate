@@ -1,0 +1,70 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "refacrtory"
+		},
+		"AzureDatabricks_ls_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks_ls'"
+		},
+		"DataLake_ls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'DataLake_ls'"
+		},
+		"AzureDatabricks_ls_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0729-001052-6tfg6c6"
+		},
+		"DataLake_ls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://djrestores.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "refacrtory_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDatabricks_ls_accessToken": {
+						"value": "[parameters('AzureDatabricks_ls_accessToken')]"
+					},
+					"DataLake_ls_accountKey": {
+						"value": "[parameters('DataLake_ls_accountKey')]"
+					},
+					"AzureDatabricks_ls_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('AzureDatabricks_ls_properties_typeProperties_existingClusterId')]"
+					},
+					"DataLake_ls_properties_typeProperties_url": {
+						"value": "[parameters('DataLake_ls_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
